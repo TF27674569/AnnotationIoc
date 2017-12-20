@@ -30,7 +30,7 @@ import javax.tools.JavaFileObject;
 import static javax.lang.model.element.Modifier.PRIVATE;
 
 /**
- * Description : ÊµÏÖ×Ô¼ºÂëÎÄ¼şµÄÉú³É
+ * Description : å®ç°è‡ªå·±ç æ–‡ä»¶çš„ç”Ÿæˆ
  * <p/>
  * Created : TIAN FENG
  * Date : 2017/5/24
@@ -41,35 +41,35 @@ import static javax.lang.model.element.Modifier.PRIVATE;
 public class BindViewProcessor extends AbstractProcessor {
 
     private Elements mElements;
-    // ¸ù¾İÊ¹ÓÃ²»Í¬µÄ×¢½â ´æ´¢²»Í¬µÄhelper¶ÔÏó
+    // æ ¹æ®ä½¿ç”¨ä¸åŒçš„æ³¨è§£ å­˜å‚¨ä¸åŒçš„helperå¯¹è±¡
     private Map<String, ProcessorHelper> mHelpers = new HashMap<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
         /**
-         * »ñÈ¡Ò»¸ö³ÌĞòÔªËØ£¬±ÈÈç°ü¡¢Àà»òÕß·½·¨£¬ÓĞÈçÏÂ¼¸ÖÖ×Ó½Ó¿Ú£º
-         * ExecutableElement£º±íÊ¾Ä³¸öÀà»ò½Ó¿ÚµÄ·½·¨¡¢¹¹Ôì·½·¨»ò³õÊ¼»¯³ÌĞò£¨¾²Ì¬»òÊµÀı£©£¬°üÀ¨×¢½âÀàĞÍÔªËØ £»
-         * PackageElement£º±íÊ¾Ò»¸ö°ü³ÌĞòÔªËØ£»
-         * TypeElement£º±íÊ¾Ò»¸öÀà»ò½Ó¿Ú³ÌĞòÔªËØ£»
-         * TypeParameterElement£º±íÊ¾Ò»°ãÀà¡¢½Ó¿Ú¡¢·½·¨»ò¹¹Ôì·½·¨ÔªËØµÄĞÎÊ½ÀàĞÍ²ÎÊı£»
-         * VariableElement£º±íÊ¾Ò»¸ö×Ö¶Î¡¢enum ³£Á¿¡¢·½·¨»ò¹¹Ôì·½·¨²ÎÊı¡¢¾Ö²¿±äÁ¿»òÒì³£²ÎÊı
+         * è·å–ä¸€ä¸ªç¨‹åºå…ƒç´ ï¼Œæ¯”å¦‚åŒ…ã€ç±»æˆ–è€…æ–¹æ³•ï¼Œæœ‰å¦‚ä¸‹å‡ ç§å­æ¥å£ï¼š
+         * ExecutableElementï¼šè¡¨ç¤ºæŸä¸ªç±»æˆ–æ¥å£çš„æ–¹æ³•ã€æ„é€ æ–¹æ³•æˆ–åˆå§‹åŒ–ç¨‹åºï¼ˆé™æ€æˆ–å®ä¾‹ï¼‰ï¼ŒåŒ…æ‹¬æ³¨è§£ç±»å‹å…ƒç´  ï¼›
+         * PackageElementï¼šè¡¨ç¤ºä¸€ä¸ªåŒ…ç¨‹åºå…ƒç´ ï¼›
+         * TypeElementï¼šè¡¨ç¤ºä¸€ä¸ªç±»æˆ–æ¥å£ç¨‹åºå…ƒç´ ï¼›
+         * TypeParameterElementï¼šè¡¨ç¤ºä¸€èˆ¬ç±»ã€æ¥å£ã€æ–¹æ³•æˆ–æ„é€ æ–¹æ³•å…ƒç´ çš„å½¢å¼ç±»å‹å‚æ•°ï¼›
+         * VariableElementï¼šè¡¨ç¤ºä¸€ä¸ªå­—æ®µã€enum å¸¸é‡ã€æ–¹æ³•æˆ–æ„é€ æ–¹æ³•å‚æ•°ã€å±€éƒ¨å˜é‡æˆ–å¼‚å¸¸å‚æ•°
          */
         mElements = processingEnvironment.getElementUtils();
     }
 
 
     /**
-     * Èç¹û´¦ÀíÆ÷Àà×¢ÊÍÔÚ×¢ÊÍ SupportedSourceVersion£¬·µ»ØÔ´´úÂë°æ±¾¡£
+     * å¦‚æœå¤„ç†å™¨ç±»æ³¨é‡Šåœ¨æ³¨é‡Š SupportedSourceVersionï¼Œè¿”å›æºä»£ç ç‰ˆæœ¬ã€‚
      */
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        //·µ»Øµ±Ç°Ö´ĞĞ»·¾³ÍêÈ«Ö§³ÖµÄ×îĞÂ°æ±¾
+        //è¿”å›å½“å‰æ‰§è¡Œç¯å¢ƒå®Œå…¨æ”¯æŒçš„æœ€æ–°ç‰ˆæœ¬
         return SourceVersion.latestSupported();
     }
 
     /**
-     * Ìí¼Ó´¦ÀíÆ÷ÔÚ±àÒëÆÚĞèÒª´¦ÀíµÄ×¢½â
+     * æ·»åŠ å¤„ç†å™¨åœ¨ç¼–è¯‘æœŸéœ€è¦å¤„ç†çš„æ³¨è§£
      */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -82,9 +82,9 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * ±àÒëÆ÷ÔÚ±àÒëÆÚÉ¨Ãèºó»Øµ÷µÄº¯Êı
+     * ç¼–è¯‘å™¨åœ¨ç¼–è¯‘æœŸæ‰«æåå›è°ƒçš„å‡½æ•°
      *
-     * @param roundEnvironment ÓÃÓÚ²éÕÒ³ö³ÌĞòÔªËØÉÏÊ¹ÓÃµÄ×¢½â
+     * @param roundEnvironment ç”¨äºæŸ¥æ‰¾å‡ºç¨‹åºå…ƒç´ ä¸Šä½¿ç”¨çš„æ³¨è§£
      */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
@@ -96,85 +96,85 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * É¨ÃèExtra
+     * æ‰«æExtra
      */
     private void scanExtra(RoundEnvironment roundEnvironment) {
         Set<? extends Element> extraElements = roundEnvironment.getElementsAnnotatedWith(Extra.class);
         for (Element extraElement : extraElements) {
-            // ¼ì²â±êÇ©
+            // æ£€æµ‹æ ‡ç­¾
             if (!checkAnnotation(extraElement, Extra.class, ElementKind.FIELD)) {
                 return;
             }
-            // ÄÃµ½ÎÄ¼şElenemt
+            // æ‹¿åˆ°æ–‡ä»¶Elenemt
             VariableElement fieldElement = (VariableElement) extraElement;
-            // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
+            // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
             ProcessorHelper helper = addHelperToHelpers(fieldElement);
-            // ÄÃµ½µ±Ç°ÀàĞÍµÄ×¢½â¶ÔÏó
+            // æ‹¿åˆ°å½“å‰ç±»å‹çš„æ³¨è§£å¯¹è±¡
             Extra annotation = fieldElement.getAnnotation(Extra.class);
-            // »ñÈ¡×¢½âÖĞµÄÖµ
+            // è·å–æ³¨è§£ä¸­çš„å€¼
             String key = annotation.value();
-            // ±£´æµ½µ±Ç°helperÀàµÄ¼¯ºÏ
+            // ä¿å­˜åˆ°å½“å‰helperç±»çš„é›†åˆ
             helper.extraElements.put(key, fieldElement);
         }
     }
 
     /**
-     * É¨ÃèViewById
+     * æ‰«æViewById
      */
     private void scanViewById(RoundEnvironment roundEnvironment) {
         Set<? extends Element> viewByIdElements = roundEnvironment.getElementsAnnotatedWith(ViewById.class);
         for (Element viewByIdElement : viewByIdElements) {
-            // ¼ì²â±êÇ©
+            // æ£€æµ‹æ ‡ç­¾
             if (!checkAnnotation(viewByIdElement, ViewById.class, ElementKind.FIELD)) {
                 return;
             }
-            // ÄÃµ½ÎÄ¼şElenemt
+            // æ‹¿åˆ°æ–‡ä»¶Elenemt
             VariableElement fieldElement = (VariableElement) viewByIdElement;
-            // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
+            // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
             ProcessorHelper helper = addHelperToHelpers(fieldElement);
-            // ÄÃµ½µ±Ç°ÀàĞÍµÄ×¢½â¶ÔÏó
+            // æ‹¿åˆ°å½“å‰ç±»å‹çš„æ³¨è§£å¯¹è±¡
             ViewById annotation = fieldElement.getAnnotation(ViewById.class);
-            // »ñÈ¡×¢½âÖĞµÄÖµ
+            // è·å–æ³¨è§£ä¸­çš„å€¼
             int id = annotation.value();
-            // ±£´æµ½µ±Ç°helperÀàµÄ¼¯ºÏ
+            // ä¿å­˜åˆ°å½“å‰helperç±»çš„é›†åˆ
             helper.viewByIdElements.put(id, fieldElement);
         }
     }
 
     /**
-     * É¨ÃèEvent
+     * æ‰«æEvent
      */
     private void scanEvent(RoundEnvironment roundEnvironment) {
         Set<? extends Element> eventElements = roundEnvironment.getElementsAnnotatedWith(Event.class);
         for (Element eventElement : eventElements) {
-            // ¼ì²â±êÇ©
+            // æ£€æµ‹æ ‡ç­¾
             if (!checkAnnotation(eventElement, Event.class, ElementKind.METHOD)) {
                 return;
             }
-            // ÄÃµ½·½·¨Elenemt
+            // æ‹¿åˆ°æ–¹æ³•Elenemt
             ExecutableElement methodElement = (ExecutableElement) eventElement;
-            // ÄÃµ½ÀàµÄElement
+            // æ‹¿åˆ°ç±»çš„Element
             TypeElement classElement = (TypeElement) methodElement.getEnclosingElement();
-            // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
+            // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
             ProcessorHelper helper = addHelperToHelpers(methodElement);
-            // ÄÃµ½µ±Ç°ÀàĞÍµÄ×¢½â¶ÔÏó
+            // æ‹¿åˆ°å½“å‰ç±»å‹çš„æ³¨è§£å¯¹è±¡
             Event annotation = methodElement.getAnnotation(Event.class);
-            // »ñÈ¡×¢½âÖĞµÄÖµ
+            // è·å–æ³¨è§£ä¸­çš„å€¼
             int[] ids = annotation.value();
-            // ±£´æµ½µ±Ç°helperÀàµÄ¼¯ºÏ
+            // ä¿å­˜åˆ°å½“å‰helperç±»çš„é›†åˆ
             helper.eventElements.put(ids, methodElement);
         }
     }
 
     /**
-     * Ìí¼Óhelperµ½helpers
+     * æ·»åŠ helperåˆ°helpers
      */
     private ProcessorHelper addHelperToHelpers(Element element) {
-        // ÄÃµ½ÀàµÄElement
+        // æ‹¿åˆ°ç±»çš„Element
         TypeElement classElement = (TypeElement) element.getEnclosingElement();
-        // ÄÃµ½µ±Ç°È«ÀàÃû
+        // æ‹¿åˆ°å½“å‰å…¨ç±»å
         String qualifileame = classElement.getQualifiedName().toString();
-        // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
+        // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
         ProcessorHelper helper = mHelpers.get(qualifileame);
         if (helper == null) {
             helper = new ProcessorHelper(classElement, mElements);
@@ -184,15 +184,15 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * ¼ì²âElementÊÇ·ñÕıÈ· ¸ù¾İElementKind ÅĞ¶Ï
+     * æ£€æµ‹Elementæ˜¯å¦æ­£ç¡® æ ¹æ®ElementKind åˆ¤æ–­
      */
     private boolean checkAnnotation(Element element, Class<?> typeClass, ElementKind elementKind) {
-        // ÅĞ¶ÏÊÇ·ñÊÇprivateµÄ
+        // åˆ¤æ–­æ˜¯å¦æ˜¯privateçš„
         if (judgePrivate(element)) {
             error(element, "%s() must can not be private.", typeClass.getSimpleName());
             return false;
         }
-        // ÅĞ¶ÏÊÇ·ñÊÇ¶ÔÓ¦ÀàĞÍ
+        // åˆ¤æ–­æ˜¯å¦æ˜¯å¯¹åº”ç±»å‹
         if (elementKind != element.getKind()) {
             error(element, "%s must be declared on field.", element.getSimpleName());
             return false;
@@ -201,20 +201,20 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * ´´½¨Í¬°üÏÂµÄviewhelper
+     * åˆ›å»ºåŒåŒ…ä¸‹çš„viewhelper
      */
     private boolean creatClassByHelper() {
-        // ¿ªÊ¼´´½¨javaÎÄ¼ş ¸ù¾İÀàÃûÅĞ¶ÏĞèÒª´´½¨¶àÉÙ¸öÎÄ¼ş
+        // å¼€å§‹åˆ›å»ºjavaæ–‡ä»¶ æ ¹æ®ç±»ååˆ¤æ–­éœ€è¦åˆ›å»ºå¤šå°‘ä¸ªæ–‡ä»¶
         for (String className : mHelpers.keySet()) {
-            // ÄÃµ½helper £¨ºóĞø¸ù¾İhelperÈ¡Öµ£©
+            // æ‹¿åˆ°helper ï¼ˆåç»­æ ¹æ®helperå–å€¼ï¼‰
             ProcessorHelper helper = mHelpers.get(className);
 
             try {
-                // ´´½¨×Ö½ÚÂëÎÄ¼ş
+                // åˆ›å»ºå­—èŠ‚ç æ–‡ä»¶
                 JavaFileObject jfo = processingEnv.getFiler()
                         .createSourceFile(
-                                helper.getHelperClassQualifiedName(),//È«ÀàÃû
-                                helper.getTypeElement());//classµÄElement
+                                helper.getHelperClassQualifiedName(),//å…¨ç±»å
+                                helper.getTypeElement());//classçš„Element
                 Writer writer = jfo.openWriter();
                 writer.write(helper.generateJavaCode());
                 writer.flush();
@@ -232,7 +232,7 @@ public class BindViewProcessor extends AbstractProcessor {
 
 
     /**
-     * errorÈÕÖ¾
+     * erroræ—¥å¿—
      */
     private void error(Element element, String errorMsg, Object... args) {
         if (args.length > 0) {
@@ -242,7 +242,7 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * ÅĞ¶ÏÊÇ·ñÊÇË½ÓĞµÄ
+     * åˆ¤æ–­æ˜¯å¦æ˜¯ç§æœ‰çš„
      */
     private boolean judgePrivate(Element element) {
         return element.getModifiers().contains(PRIVATE);

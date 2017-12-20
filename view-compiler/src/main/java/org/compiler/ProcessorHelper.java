@@ -14,7 +14,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
 /**
- * Description : BindViewProcessor µÄ¸¨ÖúÀà
+ * Description : BindViewProcessor çš„è¾…åŠ©ç±»
  * <p/>
  * Created : TIAN FENG
  * Date : 2017/5/24
@@ -22,66 +22,66 @@ import javax.lang.model.util.Elements;
  * Version : 1.0
  */
 public class ProcessorHelper {
-    // Éú³É¸¨ÖúÀàµÄºóê¡Ãû
+    // ç”Ÿæˆè¾…åŠ©ç±»çš„åè¾å
     public static final String HELPER = "$_$ViewHelper";
-    // °üÃû
+    // åŒ…å
     private String mPackageName;
-    // ¸¨ÖúÀàÀàÃû
+    // è¾…åŠ©ç±»ç±»å
     private String mHelperClassName;
-    // Ô­clasµÄElement
+    // åŸclasçš„Element
     private TypeElement mClassElement;
-    // ViewById µÄ VariableElement¼¯ºÏ
+    // ViewById çš„ VariableElementé›†åˆ
     public Map<Integer, VariableElement> viewByIdElements = new HashMap<>();
-    // Event µÄ ExecutableElement¼¯ºÏ
+    // Event çš„ ExecutableElementé›†åˆ
     public Map<int[], ExecutableElement> eventElements = new HashMap<>();
-    // Extra µÄ VariableElement¼¯ºÏ
+    // Extra çš„ VariableElementé›†åˆ
     public Map<String, VariableElement> extraElements = new HashMap<>();
-    // ¸¨ÖúÀà¶ÔÓ¦µÄclassname
+    // è¾…åŠ©ç±»å¯¹åº”çš„classname
     private String mOldClassName;
 
 
     public ProcessorHelper(TypeElement classElement, Elements elementUtils) {
         this.mClassElement = classElement;
-        // ÄÃÕâ¸öÀàĞÍµÄ°üÃûµÄElement
+        // æ‹¿è¿™ä¸ªç±»å‹çš„åŒ…åçš„Element
         PackageElement packageElement = elementUtils.getPackageOf(classElement);
-        // »ñÈ¡packageµÄÈ«Ãû³Æ
+        // è·å–packageçš„å…¨åç§°
         this.mPackageName = packageElement.getQualifiedName().toString();
-        // »ñÈ¡classÃû³Æ
+        // è·å–classåç§°
         String className = getClassName(classElement);
         mOldClassName = packageElement.getQualifiedName().toString() + "." + getClassName(classElement);
-        // ¸¨ÖúÀàµÄÃû³Æ
+        // è¾…åŠ©ç±»çš„åç§°
         this.mHelperClassName = className + HELPER;
     }
 
     /**
-     * »ñÈ¡classÃû³Æ
+     * è·å–classåç§°
      */
     private String getClassName(TypeElement classElement) {
-        // ½ØÈ¡Î»ÖÃ²»ÄÜº¬ÓĞ°üÃû£¬ÄÇÃ´´Ó°üÃûµÄ×îºóÒ»Î»+1µÄÎ»ÖÃ¿ªÊ¼½ØÈ¡
+        // æˆªå–ä½ç½®ä¸èƒ½å«æœ‰åŒ…åï¼Œé‚£ä¹ˆä»åŒ…åçš„æœ€åä¸€ä½+1çš„ä½ç½®å¼€å§‹æˆªå–
         int packageLenth = mPackageName.length() + 1;
-        // »ñÈ¡ÀàÃûµÄÈ«Â·¾¶
+        // è·å–ç±»åçš„å…¨è·¯å¾„
         String classQualifiedName = classElement.getQualifiedName().toString();
-        // ½ØÈ¡ºóµÄclassÃû³Æ
+        // æˆªå–åçš„classåç§°
         String className = classQualifiedName.substring(packageLenth);
         return className.replace('.', '$');
     }
 
     /**
-     * »ñÈ¡Éú³É¸¨ÖúÀàµÄÈ«ÀàÃû °üÃû+ÀàÃû
+     * è·å–ç”Ÿæˆè¾…åŠ©ç±»çš„å…¨ç±»å åŒ…å+ç±»å
      */
     public String getHelperClassQualifiedName() {
         return mPackageName + "." + mHelperClassName;
     }
 
     /**
-     * ·µ»Øµ±Ç°helper¶ÔÓ¦classµÄClassElement
+     * è¿”å›å½“å‰helperå¯¹åº”classçš„ClassElement
      */
     public TypeElement getTypeElement() {
         return mClassElement;
     }
 
     /**
-     * Éú³ÉµÄ´úÂëÓï¾äÆ´½Ó
+     * ç”Ÿæˆçš„ä»£ç è¯­å¥æ‹¼æ¥
      */
     public String generateJavaCode() {
         StringBuilder sb = new StringBuilder();
@@ -89,13 +89,13 @@ public class ProcessorHelper {
         creatInitExtra(sb);
         creatInitView(sb);
         creatInitEvent(sb);
-        // Àà½áÊø´óÀ¨ºÅ
+        // ç±»ç»“æŸå¤§æ‹¬å·
         sb.append("}\n");
         return sb.toString();
     }
 
     /**
-     * ´´½¨Àà²¢ÊµÏÖV iewInject ½Ó¿Ú
+     * åˆ›å»ºç±»å¹¶å®ç°V iewInject æ¥å£
      */
     private void creatClassAndImplInject(StringBuilder sb) {
         String className = mClassElement.getQualifiedName().toString();
@@ -118,19 +118,19 @@ public class ProcessorHelper {
     }
 
     /**
-     * ´´½¨Extra´«²Î·½·¨
+     * åˆ›å»ºExtraä¼ å‚æ–¹æ³•
      */
     private void creatInitExtra(StringBuilder sb) {
         sb.append("    private void initExtra() {\n");
-        // ±éÀú extraElements ¼¯ºÏ
+        // éå† extraElements é›†åˆ
         for (String key : extraElements.keySet()) {
-            // ¸ù¾İkeyÄÃVariableElement
+            // æ ¹æ®keyæ‹¿VariableElement
             VariableElement element = extraElements.get(key);
-            // ÄÃÊôĞÔÃû³Æ
+            // æ‹¿å±æ€§åç§°
             String name = element.getSimpleName().toString();
-            // ÄÃÊôĞÔµÄÀàĞÍ(Ç¿×ªÓÃ)
+            // æ‹¿å±æ€§çš„ç±»å‹(å¼ºè½¬ç”¨)
             // String type = element.asType().toString();
-            // ³õÊ¼»¯±äÁ¿ ·½·¨ activity.mName = finder.getExtra(key);
+            // åˆå§‹åŒ–å˜é‡ æ–¹æ³• activity.mName = finder.getExtra(key);
             sb.append("        object.").append(name).append(" = finder.getExtra(\"").append(key).append("\");\n");
         }
         sb.append("    }\n\n");
@@ -138,61 +138,61 @@ public class ProcessorHelper {
 
 
     /**
-     * ´´½¨³õÊ¼»¯¿Ø¼ş
+     * åˆ›å»ºåˆå§‹åŒ–æ§ä»¶
      */
     private void creatInitView(StringBuilder sb) {
         sb.append("    private void initView() {\n");
-        // ±éÀú iewByIdElements ¼¯ºÏ
+        // éå† iewByIdElements é›†åˆ
         for (Integer viewId : viewByIdElements.keySet()) {
-            // ¸ù¾İidÄÃVariableElement
+            // æ ¹æ®idæ‹¿VariableElement
             VariableElement element = viewByIdElements.get(viewId);
-            // ÄÃÊôĞÔÃû³Æ
+            // æ‹¿å±æ€§åç§°
             String name = element.getSimpleName().toString();
-            // ÄÃÊôĞÔµÄÀàĞÍ(Ç¿×ªÓÃ)
+            // æ‹¿å±æ€§çš„ç±»å‹(å¼ºè½¬ç”¨)
             // String type = element.asType().toString();
-            // ³õÊ¼»¯±äÁ¿ ·½·¨ activity.mTextView = finder.findViewById(viewId);
+            // åˆå§‹åŒ–å˜é‡ æ–¹æ³• activity.mTextView = finder.findViewById(viewId);
             sb.append("         object.").append(name).append(" = finder.findViewById(").append(viewId).append(");\n");
         }
-        //  ´´½¨Ò»¸ö³õÊ¼»¯µã»÷ÊÂ¼şµÄ·½·¨  »»ĞĞ´Ë·½·¨½áÊø
+        //  åˆ›å»ºä¸€ä¸ªåˆå§‹åŒ–ç‚¹å‡»äº‹ä»¶çš„æ–¹æ³•  æ¢è¡Œæ­¤æ–¹æ³•ç»“æŸ
         sb.append("    }\n\n");
     }
 
     /**
-     * ´´½¨µã»÷ÊÂ¼ş
+     * åˆ›å»ºç‚¹å‡»äº‹ä»¶
      */
     private void creatInitEvent(StringBuilder sb) {
         sb.append("    private void initEvent() {\n");
-        // Èç¹ûÃ»ÓĞµã»÷ÊÂ¼ş
+        // å¦‚æœæ²¡æœ‰ç‚¹å‡»äº‹ä»¶
         if (eventElements.size() <= 0) {
-            // Ö±½Ó³£¼ûÒ»¸ö¿Õ·½·¨¼´¿É
+            // ç›´æ¥å¸¸è§ä¸€ä¸ªç©ºæ–¹æ³•å³å¯
             sb.append("    }\n\n");
             return;
         }
 
-        // idµÄ¼¯ºÏ
+        // idçš„é›†åˆ
         sb.append("        ArrayList<Integer> ids = new ArrayList<>();\n");
-        // ±éÀú eventElements µÄ¼¯ºÏ
+        // éå† eventElements çš„é›†åˆ
         for (int[] viewIds : eventElements.keySet()) {
-            // Ê×ÏÈÇå¿Õ¼¯ºÏ
+            // é¦–å…ˆæ¸…ç©ºé›†åˆ
             sb.append("        ids.clear();\n");
-            //  ¸ù¾İids ÄÃµ½ VeventElements
+            //  æ ¹æ®ids æ‹¿åˆ° VeventElements
             ExecutableElement element = eventElements.get(viewIds);
-            // ÄÃµ½·½·¨Ãû
+            // æ‹¿åˆ°æ–¹æ³•å
             String methodName = element.getSimpleName().toString();
-            //  ÄÃµ½·½·¨ĞèÒª´©µÄ²ÎÊıµÄ VariableElement --> void  setPreson£¨String name , int age£©£»
-            // ÕâÑùÄÃµ½ Á½¸ö²ÎÊıµÄ VariableElement
+            //  æ‹¿åˆ°æ–¹æ³•éœ€è¦ç©¿çš„å‚æ•°çš„ VariableElement --> void  setPresonï¼ˆString name , int ageï¼‰ï¼›
+            // è¿™æ ·æ‹¿åˆ° ä¸¤ä¸ªå‚æ•°çš„ VariableElement
             List<? extends VariableElement> parameters = element.getParameters();
-            // ÄÃµ½ËùÓĞµÄId
+            // æ‹¿åˆ°æ‰€æœ‰çš„Id
             for (int viewId : viewIds) {
-                // Ìí¼Óidµ½¼¯ºÏ
+                // æ·»åŠ idåˆ°é›†åˆ
                 sb.append("        ids.add(").append(viewId).append(");\n");
             }
-            // Ìí¼Ó¼àÌıÊÂ¼ş
+            // æ·»åŠ ç›‘å¬äº‹ä»¶
             sb.append("        finder.setOnclickListenetByIds(ids, new ViewFinder.IFinderClickListener() {\n");
             sb.append("            @Override\n");
             sb.append("            public void onClick(View view) {\n");
             sb.append("                if (finder.onInterceptClickEvent(view,object,\"").append(methodName).append("\",");
-            // »ñÈ¡²ÎÊıÀàĞÍµÄÈ«ÀàÃû
+            // è·å–å‚æ•°ç±»å‹çš„å…¨ç±»å
             if (parameters != null && parameters.size() > 0) {
                 sb.append("\"").append(parameters.get(0).asType().toString()).append("\"");
             } else {
@@ -201,7 +201,7 @@ public class ProcessorHelper {
             sb.append(")){\n");
             sb.append("                    return;\n");
             sb.append("                }\n");
-            // ÅĞ¶ÏÊÇ·ñĞèÒª¼ì²âÍøÂç
+            // åˆ¤æ–­æ˜¯å¦éœ€è¦æ£€æµ‹ç½‘ç»œ
             CheckNet checkNet = element.getAnnotation(CheckNet.class);
             if (checkNet != null) {
                 sb.append("                if (!finder.isOpenNetWork()){\n");
@@ -209,47 +209,47 @@ public class ProcessorHelper {
                 sb.append("                }\n");
             }
 
-            // ÅĞ¶ÏÊÇ·ñ¾²Ö¹Ê¹ÓÃÖØ¸´µã»÷
+            // åˆ¤æ–­æ˜¯å¦é™æ­¢ä½¿ç”¨é‡å¤ç‚¹å‡»
             EchoEnable echoEnable = element.getAnnotation(EchoEnable.class);
             if (echoEnable != null) {
-                // »ñÈ¡ÖØ¸´µã»÷µÄÊ±¼ä
+                // è·å–é‡å¤ç‚¹å‡»çš„æ—¶é—´
                 long echoEnableTime = echoEnable.value();
                 sb.append("                if (!finder.isFirstClick(").append(echoEnableTime).append(")){\n");
                 sb.append("                    return;\n");
                 sb.append("                }\n");
             }
 
-            // Ìí¼Ótry catch
+            // æ·»åŠ try catch
 //            sb.append("                try {\n");
-            // ¿ªÊ¼»Øµ÷·½·¨
+            // å¼€å§‹å›è°ƒæ–¹æ³•
             sb.append("                    object.").append(methodName).append("(");
-            // ÅĞ¶ÏÊÇ·ñĞèÒªÇ¿×ª
+            // åˆ¤æ–­æ˜¯å¦éœ€è¦å¼ºè½¬
             if (parameters != null && parameters.size() > 0) {
-                // Ç¿×ªÇ°À¨ºÅ
+                // å¼ºè½¬å‰æ‹¬å·
                 sb.append("(");
                 String typeName = parameters.get(0).asType().toString();
                 sb.append(typeName).append(")view");
             }
-            // ·½·¨Ö´ĞĞÍê±ÏºóÀ¨ºÅ
+            // æ–¹æ³•æ‰§è¡Œå®Œæ¯•åæ‹¬å·
             sb.append(");\n");
 //            sb.append("                } catch (Exception e) {\n");
-            // Å×³öÒì³£ÌáÊ¾¿ª·¢Õß
+            // æŠ›å‡ºå¼‚å¸¸æç¤ºå¼€å‘è€…
 //            sb.append("                    throw new RuntimeException(e.getMessage());\n");
-            // catch ½áÊøÀ¨ºÅ
+            // catch ç»“æŸæ‹¬å·
 //            sb.append("                }\n");
-            // onclick½áÊøÀ¨ºÅ
+            // onclickç»“æŸæ‹¬å·
             sb.append("            }\n");
-            // finder»ØµôÀ¨ºÅ
+            // finderå›æ‰æ‹¬å·
             sb.append("        });\n");
         }
         sb.append("        ids = null;\n");
-        // ·½·¨½áÊø´óÀ¨ºÅ
+        // æ–¹æ³•ç»“æŸå¤§æ‹¬å·
         sb.append("    }\n\n");
     }
 
 
     /**
-     * ´´½¨unBind£¨£©·½·¨
+     * åˆ›å»ºunBindï¼ˆï¼‰æ–¹æ³•
      *
      * @param stringBuilder
      */
