@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //打包任务
+//    task makeJar(type:org.gradle.api.tasks.bundling.Jar) {
+//        //指定生成的jar名
+//        baseName 'view-api'
+//        //从哪里打包class文件
+//        from('build/intermediates/classes/debug/org/api')
+//        //打包到jar后的目录结构
+//        into('org/api/')
+//        //去掉不需要打包的目录和文件
+//        exclude('BuildConfig.class', 'R.class')
+//        //去掉R$开头的文件
+//        exclude{ it.name.startsWith('R$');}
+//    }
+    // 合并jar
+    task makeJar(type: Jar) {
+        // 生成jar的名字
+        archiveName = 'ViewUtils.jar'
+        // 导入的jar
+        from(project.zipTree('libs/view-annotation.jar'))
+        from(project.zipTree('libs/view-compiler.jar'))
+        from(project.zipTree('libs/view-api.jar'))
+        // 最后路径
+        destinationDir = file('build/libs')
+    }
+
+    makeJar.dependsOn(build)
+
+//   gradlew makeJar
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
+    compile project(':view-compiler')
+}
