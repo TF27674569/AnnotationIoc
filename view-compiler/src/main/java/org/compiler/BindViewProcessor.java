@@ -52,16 +52,16 @@ public class BindViewProcessor extends AbstractProcessor {
 
 
     /**
-     * å¦‚æœå¤„ç†å™¨ç±»æ³¨é‡Šåœ¨æ³¨é‡Š SupportedSourceVersionï¼Œè¿”å›æºä»£ç ç‰ˆæœ¬ã€‚
+     * Èç¹û´¦ÀíÆ÷Àà×¢ÊÍÔÚ×¢ÊÍ SupportedSourceVersion£¬·µ»ØÔ´´úÂë°æ±¾¡£
      */
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        //è¿”å›å½“å‰æ‰§è¡Œç¯å¢ƒå®Œå…¨æ”¯æŒçš„æœ€æ–°ç‰ˆæœ¬
+        //·µ»Øµ±Ç°Ö´ĞĞ»·¾³ÍêÈ«Ö§³ÖµÄ×îĞÂ°æ±¾
         return SourceVersion.latestSupported();
     }
 
     /**
-     * æ·»åŠ å¤„ç†å™¨åœ¨ç¼–è¯‘æœŸéœ€è¦å¤„ç†çš„æ³¨è§£
+     * Ìí¼Ó´¦ÀíÆ÷ÔÚ±àÒëÆÚĞèÒª´¦ÀíµÄ×¢½â
      */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -74,9 +74,9 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * ç¼–è¯‘å™¨åœ¨ç¼–è¯‘æœŸæ‰«æåå›è°ƒçš„å‡½æ•°
+     * ±àÒëÆ÷ÔÚ±àÒëÆÚÉ¨Ãèºó»Øµ÷µÄº¯Êı
      *
-     * @param roundEnvironment ç”¨äºæŸ¥æ‰¾å‡ºç¨‹åºå…ƒç´ ä¸Šä½¿ç”¨çš„æ³¨è§£
+     * @param roundEnvironment ÓÃÓÚ²éÕÒ³ö³ÌĞòÔªËØÉÏÊ¹ÓÃµÄ×¢½â
      */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
@@ -88,85 +88,85 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * æ‰«æExtra
+     * É¨ÃèExtra
      */
     private void scanExtra(RoundEnvironment roundEnvironment) {
         Set<? extends Element> extraElements = roundEnvironment.getElementsAnnotatedWith(Extra.class);
         for (Element extraElement : extraElements) {
-            // æ£€æµ‹æ ‡ç­¾
+            // ¼ì²â±êÇ©
             if (!checkAnnotation(extraElement, Extra.class, ElementKind.FIELD)) {
                 return;
             }
-            // æ‹¿åˆ°æ–‡ä»¶Elenemt
+            // ÄÃµ½ÎÄ¼şElenemt
             VariableElement fieldElement = (VariableElement) extraElement;
-            // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
+            // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
             ProcessorHelper helper = addHelperToHelpers(fieldElement);
-            // æ‹¿åˆ°å½“å‰ç±»å‹çš„æ³¨è§£å¯¹è±¡
+            // ÄÃµ½µ±Ç°ÀàĞÍµÄ×¢½â¶ÔÏó
             Extra annotation = fieldElement.getAnnotation(Extra.class);
-            // è·å–æ³¨è§£ä¸­çš„å€¼
+            // »ñÈ¡×¢½âÖĞµÄÖµ
             String key = annotation.value();
-            // ä¿å­˜åˆ°å½“å‰helperç±»çš„é›†åˆ
+            // ±£´æµ½µ±Ç°helperÀàµÄ¼¯ºÏ
             helper.extraElements.put(key, fieldElement);
         }
     }
 
     /**
-     * æ‰«æViewById
+     * É¨ÃèViewById
      */
     private void scanViewById(RoundEnvironment roundEnvironment) {
         Set<? extends Element> viewByIdElements = roundEnvironment.getElementsAnnotatedWith(ViewById.class);
         for (Element viewByIdElement : viewByIdElements) {
-            // æ£€æµ‹æ ‡ç­¾
+            // ¼ì²â±êÇ©
             if (!checkAnnotation(viewByIdElement, ViewById.class, ElementKind.FIELD)) {
                 return;
             }
-            // æ‹¿åˆ°æ–‡ä»¶Elenemt
+            // ÄÃµ½ÎÄ¼şElenemt
             VariableElement fieldElement = (VariableElement) viewByIdElement;
-            // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
+            // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
             ProcessorHelper helper = addHelperToHelpers(fieldElement);
-            // æ‹¿åˆ°å½“å‰ç±»å‹çš„æ³¨è§£å¯¹è±¡
+            // ÄÃµ½µ±Ç°ÀàĞÍµÄ×¢½â¶ÔÏó
             ViewById annotation = fieldElement.getAnnotation(ViewById.class);
-            // è·å–æ³¨è§£ä¸­çš„å€¼
+            // »ñÈ¡×¢½âÖĞµÄÖµ
             int id = annotation.value();
-            // ä¿å­˜åˆ°å½“å‰helperç±»çš„é›†åˆ
+            // ±£´æµ½µ±Ç°helperÀàµÄ¼¯ºÏ
             helper.viewByIdElements.put(id, fieldElement);
         }
     }
 
     /**
-     * æ‰«æEvent
+     * É¨ÃèEvent
      */
     private void scanEvent(RoundEnvironment roundEnvironment) {
         Set<? extends Element> eventElements = roundEnvironment.getElementsAnnotatedWith(Event.class);
         for (Element eventElement : eventElements) {
-            // æ£€æµ‹æ ‡ç­¾
+            // ¼ì²â±êÇ©
             if (!checkAnnotation(eventElement, Event.class, ElementKind.METHOD)) {
                 return;
             }
-            // æ‹¿åˆ°æ–¹æ³•Elenemt
+            // ÄÃµ½·½·¨Elenemt
             ExecutableElement methodElement = (ExecutableElement) eventElement;
-            // æ‹¿åˆ°ç±»çš„Element
+            // ÄÃµ½ÀàµÄElement
             TypeElement classElement = (TypeElement) methodElement.getEnclosingElement();
-            // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
+            // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
             ProcessorHelper helper = addHelperToHelpers(methodElement);
-            // æ‹¿åˆ°å½“å‰ç±»å‹çš„æ³¨è§£å¯¹è±¡
+            // ÄÃµ½µ±Ç°ÀàĞÍµÄ×¢½â¶ÔÏó
             Event annotation = methodElement.getAnnotation(Event.class);
-            // è·å–æ³¨è§£ä¸­çš„å€¼
+            // »ñÈ¡×¢½âÖĞµÄÖµ
             int[] ids = annotation.value();
-            // ä¿å­˜åˆ°å½“å‰helperç±»çš„é›†åˆ
+            // ±£´æµ½µ±Ç°helperÀàµÄ¼¯ºÏ
             helper.eventElements.put(ids, methodElement);
         }
     }
 
     /**
-     * æ·»åŠ helperåˆ°helpers
+     * Ìí¼Óhelperµ½helpers
      */
     private ProcessorHelper addHelperToHelpers(Element element) {
-        // æ‹¿åˆ°ç±»çš„Element
+        // ÄÃµ½ÀàµÄElement
         TypeElement classElement = (TypeElement) element.getEnclosingElement();
-        // æ‹¿åˆ°å½“å‰å…¨ç±»å
+        // ÄÃµ½µ±Ç°È«ÀàÃû
         String qualifileame = classElement.getQualifiedName().toString();
-        // æ ¹æ®å…¨ç±»å è·å–å¯¹åº”çš„helper
+        // ¸ù¾İÈ«ÀàÃû »ñÈ¡¶ÔÓ¦µÄhelper
         ProcessorHelper helper = mHelpers.get(qualifileame);
         if (helper == null) {
             helper = new ProcessorHelper(classElement, mElements);
@@ -176,15 +176,15 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * æ£€æµ‹Elementæ˜¯å¦æ­£ç¡® æ ¹æ®ElementKind åˆ¤æ–­
+     * ¼ì²âElementÊÇ·ñÕıÈ· ¸ù¾İElementKind ÅĞ¶Ï
      */
     private boolean checkAnnotation(Element element, Class<?> typeClass, ElementKind elementKind) {
-        // åˆ¤æ–­æ˜¯å¦æ˜¯privateçš„
+        // ÅĞ¶ÏÊÇ·ñÊÇprivateµÄ
         if (judgePrivate(element)) {
             error(element, "%s() must can not be private.", typeClass.getSimpleName());
             return false;
         }
-        // åˆ¤æ–­æ˜¯å¦æ˜¯å¯¹åº”ç±»å‹
+        // ÅĞ¶ÏÊÇ·ñÊÇ¶ÔÓ¦ÀàĞÍ
         if (elementKind != element.getKind()) {
             error(element, "%s must be declared on field.", element.getSimpleName());
             return false;
@@ -193,20 +193,20 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * åˆ›å»ºåŒåŒ…ä¸‹çš„viewhelper
+     * ´´½¨Í¬°üÏÂµÄviewhelper
      */
     private boolean creatClassByHelper() {
-        // å¼€å§‹åˆ›å»ºjavaæ–‡ä»¶ æ ¹æ®ç±»ååˆ¤æ–­éœ€è¦åˆ›å»ºå¤šå°‘ä¸ªæ–‡ä»¶
+        // ¿ªÊ¼´´½¨javaÎÄ¼ş ¸ù¾İÀàÃûÅĞ¶ÏĞèÒª´´½¨¶àÉÙ¸öÎÄ¼ş
         for (String className : mHelpers.keySet()) {
-            // æ‹¿åˆ°helper ï¼ˆåç»­æ ¹æ®helperå–å€¼ï¼‰
+            // ÄÃµ½helper £¨ºóĞø¸ù¾İhelperÈ¡Öµ£©
             ProcessorHelper helper = mHelpers.get(className);
 
             try {
-                // åˆ›å»ºå­—èŠ‚ç æ–‡ä»¶
+                // ´´½¨×Ö½ÚÂëÎÄ¼ş
                 JavaFileObject jfo = processingEnv.getFiler()
                         .createSourceFile(
-                                helper.getHelperClassQualifiedName(),//å…¨ç±»å
-                                helper.getTypeElement());//classçš„Element
+                                helper.getHelperClassQualifiedName(),//È«ÀàÃû
+                                helper.getTypeElement());//classµÄElement
                 Writer writer = jfo.openWriter();
                 writer.write(helper.generateJavaCode());
                 writer.flush();
@@ -224,7 +224,7 @@ public class BindViewProcessor extends AbstractProcessor {
 
 
     /**
-     * erroræ—¥å¿—
+     * errorÈÕÖ¾
      */
     private void error(Element element, String errorMsg, Object... args) {
         if (args.length > 0) {
@@ -234,7 +234,7 @@ public class BindViewProcessor extends AbstractProcessor {
     }
 
     /**
-     * åˆ¤æ–­æ˜¯å¦æ˜¯ç§æœ‰çš„
+     * ÅĞ¶ÏÊÇ·ñÊÇË½ÓĞµÄ
      */
     private boolean judgePrivate(Element element) {
         return element.getModifiers().contains(PRIVATE);
