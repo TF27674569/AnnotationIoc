@@ -30,7 +30,7 @@ import javax.tools.JavaFileObject;
 import static javax.lang.model.element.Modifier.PRIVATE;
 
 /**
- * Description : 实现自己码文件的生成
+ * Description :
  * <p/>
  * Created : TIAN FENG
  * Date : 2017/5/24
@@ -41,20 +41,12 @@ import static javax.lang.model.element.Modifier.PRIVATE;
 public class BindViewProcessor extends AbstractProcessor {
 
     private Elements mElements;
-    // 根据使用不同的注解 存储不同的helper对象
     private Map<String, ProcessorHelper> mHelpers = new HashMap<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
-        /**
-         * 获取一个程序元素，比如包、类或者方法，有如下几种子接口：
-         * ExecutableElement：表示某个类或接口的方法、构造方法或初始化程序（静态或实例），包括注解类型元素 ；
-         * PackageElement：表示一个包程序元素；
-         * TypeElement：表示一个类或接口程序元素；
-         * TypeParameterElement：表示一般类、接口、方法或构造方法元素的形式类型参数；
-         * VariableElement：表示一个字段、enum 常量、方法或构造方法参数、局部变量或异常参数
-         */
+
         mElements = processingEnvironment.getElementUtils();
     }
 
