@@ -33,7 +33,7 @@ android {
 //        //去掉R$开头的文件
 //        exclude{ it.name.startsWith('R$');}
 //    }
-    // 合并jar
+//     合并jar
     task makeJar(type: Jar) {
         // 生成jar的名字
         archiveName = 'ViewUtils.jar'
